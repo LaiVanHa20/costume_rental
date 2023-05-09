@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<h2>Thông tin khách hàng</h2>
+<div>
+    <p>Mã khách hàng: <span th:text="${session.khachhang.id}"></span></p>
+    <p>Họ tên: <span th:text="${session.khachhang.name}"></span></p>
+    <p>Số điện thoại: <span th:text="${session.khachhang.phone}"></span></p>
+</div>
+<h2>Danh sách trang phục</h2>
+<table>
+    <tr>
+        <th>Mã trang phục</th>
+        <th>Tên</th>
+        <th>Loại</th>
+        <th>Giá trị</th>
+        <th>Ngày mượn</th>
+        <th>Giá thuê</th>
+        <th>Số lượng mượn</th>
+        <th>Số ngày mượn</th>
+        <th>Tổng tiền thuê</th>
+        <th>Tình trạng</th>
+        <th>Tiền phạt</th>
+    </tr>
+    <tr th:each="item: ${session.trangphucs}">
+        <td th:text="${item.costumeId}"/>
+        <td th:text="${item.costumeName}"/>
+        <td th:text="${item.costumeType}"/>
+        <td th:text="${item.costumePrice}"/>
+        <td th:text="${item.borrowedDate}"/>
+        <td th:text="${item.rentCost}"/>
+        <td th:text="${item.quantity}"/>
+        <td th:text="${item.borrowedDays}"/>
+        <td th:text="${item.borrowedDays * item.rentCost}"/>
+        <td th:text="${item.status}"/>
+        <td th:text="${item.fine}"/>
+    </tr>
+    <tfoot>
+    <tr>
+        <td colspan="8"></td>
+        <td colspan="1">Tổng tiền phải trả:</td>
+        <td th:text="${totalMoney}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="8"></td>
+        <td colspan="1">Số tiền đã cọc:</td>
+        <td th:text="${totalDeposit}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="8"></td>
+        <td colspan="1">Số tiền khách phải trả / trả lại khách:</td>
+        <td th:text="${refundMoney}"></td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>
+<p th:text="${notFoundLabel}" style="color: red"/>
+<p th:text="${successLabel}" style="color: green"/>
+<form th:action="@{/payment/invoice}" method="post">
+    <input type="submit" value="Xác nhận"/>
+</form>
+</body>
+</html>

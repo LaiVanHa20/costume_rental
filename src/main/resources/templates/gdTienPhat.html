@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>Nhập tình trạng, tiền phạt</h1>
+<form th:action="@{/payment/penalty}" th:object="${penaltyDTO}" method="post">
+  <input type="hidden" th:value="${costumeId}" name="costumeId">
+  <p>Tình trạng: <input type="text" step="any" th:field="*{status}"/></p>
+  <ul>
+    <li th:each="err : ${#fields.errors('status')}" th:text="${err}" class="error" style="color: red"/>
+  </ul>
+  <p>Tiền phạt: <input type="number" th:field="*{fine}"/></p>
+  <ul>
+    <li th:each="err : ${#fields.errors('fine')}" th:text="${err}" class="error" style="color: red"/>
+  </ul>
+  <input type="submit" value="Lưu"/>
+</form>
+</body>
+</html>

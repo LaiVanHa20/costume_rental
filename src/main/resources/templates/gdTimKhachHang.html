@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<h1>Tìm Khách Hàng</h1>
+<form th:action="@{/payment/findCustomer}" method="post">
+    <input type="text" th:value="${keyword}" name="keyword"/>
+    <input type="submit" value="Tìm"/>
+</form>
+<h2>Danh Sách Khách Hàng</h2>
+<table>
+    <tr>
+        <th>Mã</th>
+        <th>Tên khách hàng</th>
+        <th>Địa chỉ</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Ghi chú</th>
+        <th>Thao tác</th>
+    </tr>
+    <tr th:each="khachHang: ${listKhachHang}">
+        <td th:text="${khachHang.id}"/>
+        <td th:text="${khachHang.name}"/>
+        <td th:text="${khachHang.address}"/>
+        <td th:text="${khachHang.email}"/>
+        <td th:text="${khachHang.phone}"/>
+        <td th:text="${khachHang.description}"/>
+        <td>
+            <a th:href="@{'/payment/listCostumes?customerId='+${khachHang.id}}">Chọn</a>
+        </td>
+    </tr>
+</table>
+<p th:text="${notFoundLabel}" style="color: red"/>
+<p th:text="${successLabel}" style="color: green"/>
+</form>
+</body>
+</html>
