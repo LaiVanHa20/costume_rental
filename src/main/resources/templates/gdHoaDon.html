@@ -79,7 +79,7 @@
 </table>
 <p th:text="${notFoundLabel}" style="color: red"/>
 <p th:text="${successLabel}" style="color: green"/>
-<form th:action="@{/payment/invoice}" method="post">
+<form th:action="@{'/payment/invoice?totalMoney=' + ${totalMoney} + '&refundMoney=' + ${refundMoney}}" method="post">
     <input type="submit" value="Xác nhận"/>
 </form>
 </body>

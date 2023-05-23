@@ -130,7 +130,7 @@ public class PaymentController {
         return "gdDanhSachTrangPhuc";
     }
     @PostMapping(value = "/invoice")
-    public String confirm(HttpSession session, Model model) {
+    public String confirm(HttpSession session, Model model, @RequestParam Double totalMoney, @RequestParam Double refundMoney) {
         List<CostumeDTO> costumeDTOList = (List<CostumeDTO>) session.getAttribute(TRANG_PHUC);
         if (CollectionUtils.isEmpty(costumeDTOList)) {
             model.addAttribute("notFoundLabel", "Bạn chưa chọn trang phục trả!");
@@ -142,6 +142,7 @@ public class PaymentController {
             CostumeReturnDetail costumeReturnDetail = new CostumeReturnDetail();
             costumeReturnDetail.setQuantityReturn(costumeDTO.getQuantity());
             costumeReturnDetail.setBorrowedDays(costumeDTO.getBorrowedDays());
+            costumeReturnDetail.setCostumeBorrowingDetail(costumeBorrowingDetailService.findById(costumeDTO.getCostumeBorrowingDetailId()));
             costumeReturnDetails.add(costumeReturnDetail);
 
             costumeReturnDetailService.save(costumeReturnDetail);
@@ -156,6 +157,8 @@ public class PaymentController {
         Invoice invoice = new Invoice();
         invoice.setCustomer(customer);
         invoice.setTime(new Date());
+        invoice.setTotalMoney(totalMoney);
+        invoice.setRefunds(refundMoney);
         invoice.setCostumeReturnDetails(costumeReturnDetails);
 
         invoiceService.save(invoice);

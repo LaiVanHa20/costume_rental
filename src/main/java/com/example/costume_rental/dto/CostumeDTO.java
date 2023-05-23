@@ -12,6 +12,7 @@ public class CostumeDTO {
     String customerName;
     Integer customerId;
     Integer costumeId;
+    Integer costumeBorrowingDetailId;
     String costumeName;
     String costumeType;
     Double costumePrice;

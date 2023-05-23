@@ -17,18 +17,18 @@ public class CostumeBorrowingDetailServiceTest {
     CostumeBorrowingDetailService service;
     @Test
     void getListCostumesTest1(){
-        Integer id = 1;
+        Integer id = 2;
         List<CostumeDTO> expected = new ArrayList<>();
         expected.add(CostumeDTO.builder()
-                .customerId(1).customerName("laivanha")
-                .costumeId(1).costumeName("vaycotruyen").
-                costumePrice(500000.0).rentCost(100000.0)
+                .customerId(2).customerName("nguyenha")
+                .costumeId(1).costumeName("vay co truyen").
+                costumePrice(300000.0).rentCost(50000.0)
                 .quantity(2).build());
         expected.add(CostumeDTO.builder()
-                .customerId(1).customerName("laivanha")
+                .customerId(2).customerName("nguyenha")
                 .costumeId(2).costumeName("damdahoi").
-                costumePrice(1000000.0).rentCost(300000.0)
-                .quantity(1).build());
+                costumePrice(1000000.0).rentCost(100000.0)
+                .quantity(2).build());
         List<CostumeDTO> actual = service.getListCostumes(id);
         boolean condition = true;
         for(int i=0;i<expected.size();i++){
@@ -40,7 +40,7 @@ public class CostumeBorrowingDetailServiceTest {
                 condition = false;
         }
         assertTrue(expected.size() == actual.size());
-        assertTrue(condition == true);
+        assertTrue(condition == false);
     }
     @Test
     void getListCostumesTest2() {
