@@ -15,7 +15,7 @@ import java.util.List;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     public List<CustomerDTO> findListCustomers(String name){
-        List<Customer> listCustomer = customerRepository.findAllCustomerByNameContains(name);
+        List<Customer> listCustomer = customerRepository.findAllCustomerByNameContains(name.trim());
         List<CustomerDTO> list = new ArrayList<>();
         listCustomer.forEach(customer -> {
             CustomerDTO customerDTO = new CustomerDTO();

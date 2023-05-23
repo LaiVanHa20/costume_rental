@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,6 +75,10 @@ public class PaymentController {
             e.printStackTrace();
             return "Khong the chuyen sang JSON";
         }
+        if (CollectionUtils.isEmpty(selectedCostumes)) {
+            model.addAttribute("notFoundLabel", "Bạn chưa chọn trang phục nào để thanh toán!");
+            return "gdDanhSachTrangPhuc";
+        }
         List<CostumeDTO> listCostumesDTO = (List<CostumeDTO>) session.getAttribute(TRANG_PHUC);
         List<CostumeDTO> filteredCostumes = listCostumesDTO.stream()
                 .filter(costume -> selectedCostumes.contains(costume.getCostumeId()))
@@ -81,11 +86,10 @@ public class PaymentController {
         session.setAttribute(TRANG_PHUC, filteredCostumes);
         double totalMoney = 0;
         for (CostumeDTO costume : listCostumesDTO) {
-            double costumePrice = costume.getCostumePrice();
             double rentCost = costume.getRentCost();
             int borrowedDays = costume.getBorrowedDays();
             double fine = costume.getFine()!= null ? costume.getFine() : 0;
-            totalMoney += rentCost * borrowedDays + fine + costumePrice;
+            totalMoney += rentCost * borrowedDays + fine;
         }
         model.addAttribute("totalMoney", totalMoney);
         double totalDeposit = filteredCostumes.get(0).getTotalDeposit();
@@ -101,10 +105,11 @@ public class PaymentController {
         return "gdTienPhat";
     }
     @PostMapping(value = "/penalty")
-    public String enterFines(@ModelAttribute("penaltyDTO") PenaltyDTO penaltyDTO,
+    public String enterFines(@Valid @ModelAttribute("penaltyDTO") PenaltyDTO penaltyDTO,
                                     BindingResult bindingResult, Model model,
                                     @RequestParam Integer costumeId, HttpSession session) {
         if (bindingResult.hasErrors()) {
+            //co loi trong form nhap tien phat
             model.addAttribute("costumeId", costumeId);
             return "gdTienPhat";
         }
